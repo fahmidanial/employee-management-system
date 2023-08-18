@@ -15,7 +15,7 @@ def create_table():
     conn.close()
     
 def fetch_employees():
-    conn = sqlite3.connect('Employee.db')
+    conn = sqlite3.connect('Employees.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM Employees')
     employees = cursor.fetchall()
