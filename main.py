@@ -20,6 +20,30 @@ def add_to_treeview():
     for employee in employees:
         tree.insert('',END,values=employee)
         
+def clear(*clicked):
+    if clicked:
+        tree.selection_remove(tree.focus())
+    id_entry.delete(0,END)
+    name_entry.delete(0,END)
+    role_entry.delete(0,END)
+    variable1.set('Male')
+    status_entry.delete(0,END)
+    
+def display_data(event):
+    selected_item = tree.focus()
+    if selected_item:
+        row = tree.item(selected_item)['values']
+        clear()
+        id_entry.insert(0,row[0])
+        name_entry.insert(0,row[1])
+        role_entry.insert(0,row[2])
+        variable1.set(row[3])
+        status_entry.insert(0,row[4])
+    else:
+        pass
+    
+    
+        
 def insert():
     id = id_entry.get()
     name = name_entry.get()
@@ -31,7 +55,7 @@ def insert():
     elif database.id_exists(id):
         messagebox.showerror("Error","ID already exists!")
     else:
-        database.insert_employee((id,name,role,gender,status))
+        database.insert_employee(id,name,role,gender,status)
         add_to_treeview()
         messagebox.showinfo('Success', 'Data has been inserted.')
      
@@ -72,7 +96,7 @@ status_entry.place(x=100,y=260)
 add_button = customtkinter.CTkButton(app,command=insert,font=font1,text_color='#fff',text='Add Employee',fg_color='#05A312',hover_color='#00850B',bg_color='#161C25',cursor='hand2',corner_radius=15,width=260)
 add_button.place(x=20,y=310)
 
-clear_button = customtkinter.CTkButton(app,font=font1,text_color='#fff',text='New Employee',fg_color='#161C25',hover_color='#FF5002',bg_color='#161C25',border_color='#F15704',border_width=2,cursor='hand2',corner_radius=15,width=260)
+clear_button = customtkinter.CTkButton(app,command=lambda:clear(True),font=font1,text_color='#fff',text='New Employee',fg_color='#161C25',hover_color='#FF5002',bg_color='#161C25',border_color='#F15704',border_width=2,cursor='hand2',corner_radius=15,width=260)
 clear_button.place(x=20,y=360)
 
 update_button = customtkinter.CTkButton(app,font=font1,text_color='#fff',text='Update Employee',fg_color='#161C25',hover_color='#FF5002',bg_color='#161C25',border_color='#F15704',border_width=2,cursor='hand2',corner_radius=15,width=260)
@@ -105,6 +129,8 @@ tree.heading('Gender', text='Gender')
 tree.heading('Status', text='Status')
 
 tree.place(x=300,y=20)
+
+tree.bind('<ButtonRelease>', display_data)
 
 add_to_treeview()
 
