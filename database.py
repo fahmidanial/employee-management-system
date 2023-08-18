@@ -40,7 +40,7 @@ def delete_employee(id):
 def update_employee(new_name, new_role, new_gender, new_status, id):
     conn = sqlite3.connect('Employees.db')
     cursor = conn.cursor()
-    cursor.execute("UPDATE Employee SET name = ?, role = ?, gender = ?, status = ? WHERE id = ?",
+    cursor.execute("UPDATE Employees SET name = ?, role = ?, gender = ?, status = ? WHERE id = ?",
                    (new_name, new_role, new_gender, new_status, id))
     conn.commit()
     conn.close() 

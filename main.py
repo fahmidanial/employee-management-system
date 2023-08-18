@@ -23,6 +23,7 @@ def add_to_treeview():
 def clear(*clicked):
     if clicked:
         tree.selection_remove(tree.focus())
+        tree.focus('')
     id_entry.delete(0,END)
     name_entry.delete(0,END)
     role_entry.delete(0,END)
@@ -42,7 +43,31 @@ def display_data(event):
     else:
         pass
     
-    
+def delete():
+    selected_item = tree.focus()
+    if not selected_item:
+        messagebox.showerror('Error', 'Choose an employee to delete.')
+    else:
+        id = id_entry.get()
+        database.delete_employee(id)
+        add_to_treeview()
+        clear()
+        messagebox.showinfo('Success', 'Data has been deleted.')
+        
+def update():
+    selected_item = tree.focus()
+    if not selected_item:
+        message.showerror('Error', 'Choose an employee to update.')
+    else:
+        id = id_entry.get()
+        name = name_entry.get()
+        role = role_entry.get()
+        gender = variable1.get()
+        status = status_entry.get()
+        database.update_employee(name, role, gender, status, id)
+        add_to_treeview()
+        clear()
+        messagebox.showinfo('Success', 'Data has been updated.')
         
 def insert():
     id = id_entry.get()
@@ -99,10 +124,10 @@ add_button.place(x=20,y=310)
 clear_button = customtkinter.CTkButton(app,command=lambda:clear(True),font=font1,text_color='#fff',text='New Employee',fg_color='#161C25',hover_color='#FF5002',bg_color='#161C25',border_color='#F15704',border_width=2,cursor='hand2',corner_radius=15,width=260)
 clear_button.place(x=20,y=360)
 
-update_button = customtkinter.CTkButton(app,font=font1,text_color='#fff',text='Update Employee',fg_color='#161C25',hover_color='#FF5002',bg_color='#161C25',border_color='#F15704',border_width=2,cursor='hand2',corner_radius=15,width=260)
+update_button = customtkinter.CTkButton(app,command=update,font=font1,text_color='#fff',text='Update Employee',fg_color='#161C25',hover_color='#FF5002',bg_color='#161C25',border_color='#F15704',border_width=2,cursor='hand2',corner_radius=15,width=260)
 update_button.place(x=300,y=360)
 
-delete_button = customtkinter.CTkButton(app,font=font1,text_color='#fff',text='Delete Employee',fg_color='#E40404',hover_color='#AE0000',bg_color='#161C25',border_color='#410404',border_width=2,cursor='hand2',corner_radius=15,width=260)
+delete_button = customtkinter.CTkButton(app,command=delete,font=font1,text_color='#fff',text='Delete Employee',fg_color='#E40404',hover_color='#AE0000',bg_color='#161C25',border_color='#410404',border_width=2,cursor='hand2',corner_radius=15,width=260)
 delete_button.place(x=580,y=360)
 
 style =ttk.Style(app)
